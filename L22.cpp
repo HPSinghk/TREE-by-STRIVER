@@ -10,29 +10,23 @@ struct TreeNode {
 };
 
 vector<int> topView(TreeNode* root){
+    vector<int> ans;
     map<int,int> mp;
     queue<pair<TreeNode*,int>> que;
     que.push({root,0});
     while(!que.empty()){
-        auto node = que.front();
+        auto it = que.front();
         que.pop();
-        int x = node.second;
-        mp[x]=(node.first->val);
-        if(node.first->left){
-            que.push({node.first->left,x-1});
+        TreeNode* node = it.first;
+        int x = it.second;
+        if(mp.find(x)==mp.end()) mp[x]=node->val;
+        if(node->left){
+            que.push({node->left,x-1});
+            }
+        if(node->right){
+            que.push({node->right,x+1});
             }
     }
-    que.push({root,0});
-    while(!que.empty()){
-        auto node = que.front();
-        que.pop();
-        int x = node.second;
-        mp[x]=(node.first->val);
-        if(node.first->right){
-            que.push({node.first->right,x+1});
-        }    
-    }
-    vector<int> ans;
     for(auto x: mp){
         ans.push_back(x.second);
     }
